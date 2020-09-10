@@ -1,0 +1,76 @@
+{
+  "superWattMetrics": [
+    { "Default":
+       { "maxRun" : 1,
+         "sampling" : 15
+       },
+      "M_pylontech":
+        { "maxRun" : 1,
+         "sampling" : 30
+       },
+       "M_pylontech2":
+        { "maxRun" : 1,
+         "sampling" : 45
+       }
+    } 
+  ],
+  "shedulerConfig":
+    { "maxThreadS" : 20,
+      "maxFork" : 2 
+    }
+  ,
+  "daemonServiceConfig":
+    { "port":18502,
+      "maxCon":5
+    }
+  ,
+  "daemonServiceCommands":
+    { "stopDaemon" : 1,
+      "stopImediateDaemon" : 1,
+      "reloadConf" : 2,
+      "pauseJobs" : 3,
+      "resumeJobs" : 4,
+      "printJobs" : 5,
+      "ping" : 6,
+      "statistics": 7,
+      "detailledStatistics": 8,
+      "getLastPayloadSent": 9,
+      "setLogLevel":10,
+      "internalMemStat":11,
+      "schedulerStatus":12
+    }
+  ,
+  "influxDbConfig":
+    { "influxDbUrl":"http://192.168.1.230",
+      "influxDbPort":8086,
+      "influxDbName":"superWatt"
+    }
+  ,
+  "superWattGeneralConfig":
+    { "superWattPlugInPath":"/users/superWattMetrics/bin/superWattPlugins"}
+  ,
+  "superWattSerialConnectionParameters":
+    { "port" : "/dev/ttyUSB0",
+      "baudrate" : 2400,
+      "bytesize" : "serial.EIGHTBITS",   
+      "parity" : "serial.PARITY_NONE",    
+      "stopbits" : "serial.STOPBITS_ONE", 
+      "timeout" :  1,
+      "xonxoff" :  "False",         
+      "rtscts" : "False",
+      "dsrdtr" : "False",                 
+      "writeTimeout" : 2  
+   }, 
+   "superWattSerialConnectionParameters4pylontech":
+    { "port" : "/dev/ttyUSB1",
+      "baudrate" : 115200,
+      "bytesize" : "serial.EIGHTBITS",
+      "parity" : "serial.PARITY_NONE",
+      "stopbits" : "serial.STOPBITS_ONE",
+      "timeout" :  1,
+      "xonxoff" :  "False",
+      "rtscts" : "False",
+      "dsrdtr" : "False",
+      "writeTimeout" : 2
+   }
+}

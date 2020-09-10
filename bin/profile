@@ -1,0 +1,61 @@
+export INFLUXDB_ADRESS=http://metrix.inetpsa.com
+export INFLUXDB_ADRESS=http://10.68.129.51:8086
+export INFLUXDB_ADRESS=http://yval5fe0:8086
+export INFLUXDB_DATABASE=eso_unix
+
+export INFLUXDB_ADRESS=http://metrix.inetpsa.com:8086
+
+export METRIX_DB=$INFLUXDB_DATABASE
+export METRIX_URL=$INFLUXDB_ADRESS
+
+# Function for creating database
+fct_createDb()
+{
+ curl -i -XPOST ${INFLUXDB_ADRESS}/query --data-urlencode "q=CREATE DATABASE ${INFLUXDB_DATABASE}"
+}
+
+fct_timestamp()
+{
+export TS=""
+}
+
+fct_timestampOld()
+{
+export TS=$(date +%s)
+}
+
+addTagGeoHash()
+{
+ if [ -f "/etc/puppetlabs/reflex_facter.dat" ]
+   then
+     SITE=$(grep "^reflex_site" /etc/puppetlabs/reflex_facter.dat | cut -d" " -f2)
+     export METRIX_SITE=${SITE}
+     GEOHASH=$(cat /soft/metrix/fileso/bin/Common/geohash/${SITE}.geohash 2>/dev/null)
+ fi
+ 
+ if [ -z "${GEOHASH}" ]
+  then
+     # Default paris
+     GEOHASH="u09tvw06c"
+ fi
+ export GEOHASH_TAG="geohash=${GEOHASH}"
+ export METRIX_GEOHASH=${GEOHASH}
+ export GEOHASH_VALUE="geohash=\"${GEOHASH}\""
+}
+
+# Write date
+# Parameter 1: datafile full path
+# Parameter 2: precision (s,DD,m,h,...) default s
+#
+fct_write_data()
+{
+    PRECISION=$2
+    if [ -z "$2" ]
+      then
+        PRECISION="s"
+    fi
+    echo "Writing to ${INFLUXDB_ADRESS} database ${INFLUXDB_DATABASE} with precision ${PRECISION}"
+    curl -i -XPOST --connect-timeout 30 "${INFLUXDB_ADRESS}/write?db=${INFLUXDB_DATABASE}&precision=${PRECISION}" --data-binary @$1
+}
+
+addTagGeoHash
